@@ -7,13 +7,12 @@ import List from './components/List';
 import Add from './components/Add';
 
 function App() {
-  const tempItems = [
+  const [count, setCount] = useState(0);
+  const [items, setItems] = useState([
     { id: 1, name: "item1", price: 1},
     { id: 2, name: "item2", price: 2},
     { id: 3, name: "item3", price: 3},
-  ]
-  const [count, setCount] = useState(0);
-  const [items, setItems] = useState(tempItems);
+  ]);
 
   const sum = () => {
     setCount(count + 1)
@@ -25,9 +24,14 @@ function App() {
 
   const add = (item) => {
     item.id = items.length + 1
-    item.price = item.id
-    setItems(...items, item)
+    setItems([...items, item])
   };
+
+  const del = (id) => {
+    setItems(items.filter((item) => {
+      return item.id !== id
+    }))
+  }
 
   return (
     <div>
@@ -39,9 +43,9 @@ function App() {
       <Boton name={"Resta"} click={resta}></Boton>
       <Boton name={"Mensaje"} click={() => {alert("hola")}}></Boton>
 
-      <List items={items}/>
-
       <Add add={add}/>
+
+      <List items={items} ondelete={del}/>
 
       <Footer/>
     </div>

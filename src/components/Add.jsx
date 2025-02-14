@@ -1,17 +1,39 @@
 import React from 'react'
-import Boton from './Boton'
 import { useState } from 'react';
 
 const Add = ({add}) => {
     const [name, setName] = useState("")
+    const [price, setPrice] = useState("")
+    const onsubmit = (e) => {
+        e.preventDefault()
+        if (!name || !price) {
+            alert("Ingrese un nombre y un precio")
+            return
+        }
+        add({name, price})
+        setName("")
+        setPrice("")
+    }
 
     return (
-    <div>
-        <input type="text" value={name} name="" id="" onChange={ (e) => { setName(e.target.value) } }/>
+    <form onSubmit={onsubmit}>
+        <input 
+            type="text" 
+            value={name} 
+            name="" 
+            id="" 
+            onChange={ (e) => { setName(e.target.value) } }
+        />
+        <input 
+            type="number" 
+            value={price} 
+            name="" 
+            id="" 
+            onChange={ (e) => { setPrice(e.target.value) } }
+        />
         <p>{name}</p>
-        <input type="number" name="" id="" />
-        <Boton name="Agregar" > </Boton>
-    </div>
+        <input type="submit" value="Agregar" />
+    </form>
     )
 }
 
