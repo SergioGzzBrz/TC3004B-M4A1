@@ -5,6 +5,9 @@ import Footer from './components/Footer';
 import Boton from './components/Boton';
 import List from './components/List';
 import Add from './components/Add';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import ResponsiveAppBar from './components/ResponsiveAppBar';
+import CredentialsSignInPage from './components/SignInPage'
 
 function App() {
   const [count, setCount] = useState(0);
@@ -35,19 +38,30 @@ function App() {
 
   return (
     <div>
-      <Header/>
+      <BrowserRouter>
+        <ResponsiveAppBar/>
+        <Header/>
+        <Routes>
+          <Route path='/' element={<CredentialsSignInPage/>}/>
+          <Route path='/add' element={<Add add={add}/>}/>
+          <Route 
+            path='/items' 
+            element={<List items={items} ondelete={del}/>}
+          />
+        </Routes>
+        <Footer/>
+      </BrowserRouter>
       
       <p>Count is {count}</p> 
       
-      <Boton name={"Suma"} click={sum}></Boton>
+      {/* <Boton name={"Suma"} click={sum}></Boton>
       <Boton name={"Resta"} click={resta}></Boton>
-      <Boton name={"Mensaje"} click={() => {alert("hola")}}></Boton>
+      <Boton name={"Mensaje"} click={() => {alert("hola")}}></Boton> */}
 
-      <Add add={add}/>
 
-      <List items={items} ondelete={del}/>
 
-      <Footer/>
+      
+
     </div>
   );
 }

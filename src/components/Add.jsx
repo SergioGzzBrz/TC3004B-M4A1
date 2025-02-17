@@ -1,9 +1,12 @@
 import React from 'react'
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Add = ({add}) => {
+    const navigate = useNavigate()
     const [name, setName] = useState("")
     const [price, setPrice] = useState("")
+
     const onsubmit = (e) => {
         e.preventDefault()
         if (!name || !price) {
@@ -13,6 +16,7 @@ const Add = ({add}) => {
         add({name, price})
         setName("")
         setPrice("")
+        navigate("/items")
     }
 
     return (
