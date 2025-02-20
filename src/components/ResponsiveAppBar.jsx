@@ -13,15 +13,17 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { useNavigate } from 'react-router-dom';
+import { SellTwoTone } from '@mui/icons-material';
 
-const pages = ['Inventario', 'Agregar Producto'];
+const pages = ['Home', 'Reloj'];
 const pagesToLink = {
-    'Inventario': '/items',
-    'Agregar Producto': '/add'
+    'Home': '/',
+    'Reloj': '/reloj',
+    'Logout': '/login',
 }
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const settings = ['Logout'];
 
-function ResponsiveAppBar() {
+function ResponsiveAppBar({ logout }) {
   const navigate = useNavigate()
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -43,8 +45,16 @@ function ResponsiveAppBar() {
     })
   };
 
-  const handleCloseUserMenu = () => {
+  const handleCloseUserMenu = (e) => {
     setAnchorElUser(null);
+    console.log(e.target.textContent);
+    settings.forEach((setting) => {
+      if (e.target.textContent === setting) {
+        navigate(pagesToLink[setting]) 
+        logout(false)
+        console.log("yes", setting, pagesToLink[setting])
+      }
+    })
   };
 
   return (

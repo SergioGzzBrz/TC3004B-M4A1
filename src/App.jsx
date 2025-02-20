@@ -1,13 +1,11 @@
 import './App.css';
 import { useState } from 'react';
-import Header from './components/Header';
-import Footer from './components/Footer';
-import Boton from './components/Boton';
-import List from './components/List';
-import Add from './components/Add';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import ResponsiveAppBar from './components/ResponsiveAppBar';
-import CredentialsSignInPage from './components/SignInPage'
+import Login from './pages/Login'
+import LoginWall from './components/LoginWall';
+import Clock from './pages/Clock';
+import Home from './pages/Home';
 
 function App() {
   const [count, setCount] = useState(0);
@@ -16,6 +14,7 @@ function App() {
     { id: 2, name: "item2", price: 2},
     { id: 3, name: "item3", price: 3},
   ]);
+  const [loggedIn, setloggedIn] = useState(false)
 
   const sum = () => {
     setCount(count + 1)
@@ -36,32 +35,46 @@ function App() {
     }))
   }
 
+  const loginFunc = ({username, password}) => {
+    if (username === "123" && password === "123") {
+      setloggedIn(true)
+      return true
+    }
+    return false
+  }
+
+  const logout = () => {
+    setloggedIn(false)
+  }
+
   return (
     <div>
       <BrowserRouter>
-        <ResponsiveAppBar/>
-        <Header/>
+        <ResponsiveAppBar logout={logout}/>
         <Routes>
-          <Route path='/' element={<CredentialsSignInPage/>}/>
-          <Route path='/add' element={<Add add={add}/>}/>
           <Route 
-            path='/items' 
-            element={<List items={items} ondelete={del}/>}
+            path='/login' 
+            element={
+                <Login loginFunc={loginFunc}/>
+            }
           />
+          <Route element={<LoginWall loggedIn={loggedIn} redirectTo="/login"/>}>
+            <Route 
+              path='/' 
+              element={
+                <Home/>
+              }
+            />
+
+            <Route 
+              path='/reloj' 
+              element={
+                <Clock/>
+              }
+            />
+          </Route>
         </Routes>
-        <Footer/>
       </BrowserRouter>
-      
-      <p>Count is {count}</p> 
-      
-      {/* <Boton name={"Suma"} click={sum}></Boton>
-      <Boton name={"Resta"} click={resta}></Boton>
-      <Boton name={"Mensaje"} click={() => {alert("hola")}}></Boton> */}
-
-
-
-      
-
     </div>
   );
 }
