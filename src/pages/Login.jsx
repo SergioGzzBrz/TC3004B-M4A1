@@ -7,14 +7,14 @@ const Login = ({ loginFunc }) => {
   const [password, setPassword] = useState("")
   const navigate = useNavigate()
 
-  const onsubmit = (e) => {
+  const onsubmit = async (e) => {
     e.preventDefault()
     if (!username || !password) {
       alert("Los campos no deben de estar vacíos")
       return;
     }
 
-    const result = loginFunc({ username, password })
+    const result = await loginFunc({ username, password })
     if (result) {
       navigate("/")
       setUsername("")

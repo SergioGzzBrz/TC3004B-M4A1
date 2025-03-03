@@ -1,20 +1,36 @@
 import './App.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import ResponsiveAppBar from './components/ResponsiveAppBar';
 import Login from './pages/Login'
 import LoginWall from './components/LoginWall';
 import Clock from './pages/Clock';
 import Home from './pages/Home';
+import List from './pages/List'
+import Add from './pages/Add';
 
 function App() {
   const [count, setCount] = useState(0);
-  const [items, setItems] = useState([
-    { id: 1, name: "item1", price: 1},
-    { id: 2, name: "item2", price: 2},
-    { id: 3, name: "item3", price: 3},
-  ]);
-  const [loggedIn, setloggedIn] = useState(false)
+  const [items, setItems] = useState([]);
+  const [isLogin, setIsLogin] = useState(false)
+  useEffect(
+    () => {
+      if (!isLogin) return
+      getItems()
+    },
+    [isLogin]
+  )
+
+  const getItems = async () => {
+    try {
+      const result = await fetch('http://localhost:5030/items/')
+      const data = await result.json()
+      console.log(data)
+      setItems(data)
+    } catch (e) {
+      console.error("Error in get items: ", e)
+    }
+  }
 
   const sum = () => {
     setCount(count + 1)
@@ -24,27 +40,53 @@ function App() {
     setCount(count - 1)
   }
 
-  const add = (item) => {
-    item.id = items.length + 1
-    setItems([...items, item])
+  const add = async (item) => {
+    try {
+      const result = await fetch('http://localhost:5030/items/', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(item),
+      })
+  
+      const data = await result.json()
+      
+      setItems([...items, ...data.inserted_items])
+    } catch (e) {
+      console.error("Error in add item:", e)
+    }
   };
 
-  const del = (id) => {
-    setItems(items.filter((item) => {
-      return item.id !== id
-    }))
+  const del = async (id) => {
+    try {
+      const result = await fetch('http://localhost:5030/items/' + id, {
+        method: 'DELETE',
+      })
+      setItems(items.filter((item) => item.id !== id))
+    } catch (e) {
+      console.error("Error in delete item:", e)
+    }
   }
 
-  const loginFunc = ({username, password}) => {
-    if (username === "123" && password === "123") {
-      setloggedIn(true)
-      return true
+  const login = async (user) => {
+    try {
+      const result = await fetch('http://localhost:5030/login/', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify( user ),
+      })
+
+      const data = await result.json()
+      setIsLogin(data.isLogin)
+      return data.isLogin
+    } catch (e) {
+      console.error("Login error:", e);
+      setIsLogin(false);
+      return false
     }
-    return false
   }
 
   const logout = () => {
-    setloggedIn(false)
+    setIsLogin(false)
   }
 
   return (
@@ -55,10 +97,10 @@ function App() {
           <Route 
             path='/login' 
             element={
-                <Login loginFunc={loginFunc}/>
+                <Login loginFunc={login}/>
             }
           />
-          <Route element={<LoginWall loggedIn={loggedIn} redirectTo="/login"/>}>
+          <Route element={<LoginWall isLogin={isLogin} redirectTo="/login"/>}>
             <Route 
               path='/' 
               element={
@@ -70,6 +112,20 @@ function App() {
               path='/reloj' 
               element={
                 <Clock/>
+              }
+            />
+
+            <Route 
+              path='/items' 
+              element={
+                <List items={items} ondelete={del}/>
+              }
+            />
+
+            <Route 
+              path='/add' 
+              element={
+                <Add add={add}/>
               }
             />
           </Route>

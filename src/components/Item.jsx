@@ -9,7 +9,7 @@ const Item = ({item, ondelete}) => {
         <li>{item.name}</li>
         <li>{item.price}</li>
         <li>
-          <Boton name={"X"} click={() => {ondelete(item.id); console.log("yeah")}}></Boton>
+          <Boton name={"X"} click={() => {ondelete(item.id); console.log("Tried to delete item!")}}></Boton>
         </li>
       </ul>
     </>

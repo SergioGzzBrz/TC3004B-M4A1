@@ -15,11 +15,13 @@ import AdbIcon from '@mui/icons-material/Adb';
 import { useNavigate } from 'react-router-dom';
 import { SellTwoTone } from '@mui/icons-material';
 
-const pages = ['Home', 'Reloj'];
+const pages = ['Home', 'Reloj', 'Items', 'Add item'];
 const pagesToLink = {
     'Home': '/',
     'Reloj': '/reloj',
     'Logout': '/login',
+    'Items': '/items',
+    'Add item': '/add',
 }
 const settings = ['Logout'];
 
