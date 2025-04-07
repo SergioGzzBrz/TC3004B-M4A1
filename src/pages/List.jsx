@@ -2,6 +2,7 @@ import React from 'react'
 import Item from '../components/Item'
 
 const List = ({items, ondelete}) => {
+  console.log('List', items)
   return (
     <>
       {
