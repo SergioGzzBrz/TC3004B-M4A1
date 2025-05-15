@@ -18,10 +18,12 @@ function App() {
     if (!isLogin) return;
     getItems();
   }, [isLogin]);
+  const API_URL = process.env.REACT_APP_API_URL;
+  console.log("API URL:", API_URL);
 
   const getItems = async () => {
     try {
-      const result = await fetch("http://localhost:5030/items/", {
+      const result = await fetch(API_URL + "/items/", {
         headers: {
           "content-type": "application/json",
           Authorization: `${token}`,
@@ -45,7 +47,7 @@ function App() {
 
   const add = async (item) => {
     try {
-      const result = await fetch("http://localhost:5030/items/", {
+      const result = await fetch(API_URL + "/items/", {
         method: "POST",
         headers: {
           "content-type": "application/json",
@@ -64,7 +66,7 @@ function App() {
 
   const del = async (id) => {
     try {
-      const result = await fetch("http://localhost:5030/items/" + id, {
+      const result = await fetch(API_URL + "/items/" + id, {
         method: "DELETE",
         headers: {
           "content-type": "application/json",
@@ -79,7 +81,7 @@ function App() {
 
   const login = async (user) => {
     try {
-      const result = await fetch("http://localhost:5030/login/", {
+      const result = await fetch(API_URL + "/login/", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify(user),
