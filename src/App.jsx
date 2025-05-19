@@ -8,6 +8,7 @@ import Clock from "./pages/Clock";
 import Home from "./pages/Home";
 import List from "./pages/List";
 import Add from "./pages/Add";
+import ItemInfo from "./components/ItemInfo";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -118,6 +119,8 @@ function App() {
             />
 
             <Route path="/add" element={<Add add={add} />} />
+
+            <Route path="/items/:id" element={<ItemInfo items={items} />} />
           </Route>
         </Routes>
       </BrowserRouter>
