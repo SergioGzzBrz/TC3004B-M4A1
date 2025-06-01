@@ -13,8 +13,11 @@ import ItemInfo from "./components/ItemInfo";
 import useCount from "./hooks/useCount";
 import useItems from "./hooks/useItems";
 import useAuth from "./hooks/useAuth";
+import LifeCycle from "./pages/LifeCycle";
 
 function App() {
+  const [show, setShow] = useState(false);
+
   const { count, suma, resta } = useCount();
   const { isLogin, logout, login, token } = useAuth();
   const { addItem, delItem, getItems, items } = useItems(token);
@@ -46,6 +49,10 @@ function App() {
           </Route>
         </Routes>
       </BrowserRouter>
+      <button onClick={() => setShow(!show)}>
+        {show ? "Hide" : "Show"} component
+      </button>
+      {show && <LifeCycle />}
       <div>
         <h1>Contador: {count}</h1>
         <Boton name={"suma"} click={suma}></Boton>
